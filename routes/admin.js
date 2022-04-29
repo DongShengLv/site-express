@@ -3,11 +3,16 @@ let express = require('express');
 let router = express.Router();
 
 const { loginService,updateService } = require('../service/adminService');
+const { ValidationError } = require('../utils/errors');
 const { formatResponse,analysisToken } = require('../utils/tool');
 
 // 登录
 router.post('/login', async function(req, res, next) {
   // 首先对验证码进行验证
+  if(req.body.captcha.toLowerCase() !== req.session.captcha.toLowerCase()){
+    // 验证码不正确
+    throw new ValidationError('验证码错误');
+  }
 
   let result = await loginService(req.body);
   // 判断用户是否登录成功

@@ -6,8 +6,6 @@ npm install --save sequelize
 
 npm install --save mysql2
 
-
-
 npm install  dotenv		环境变量库
 
 在项目根目录下新建 .env文件  文件中配置环境变量 如数据库名称 用户信息等
@@ -23,6 +21,10 @@ npm install jsonwebtoken	响应头设置 token
 npm install express-jwt		对客户端出过来的 token进行验证
 
 npm install express-async-errors		捕获异步错误
+
+npm install svg-captcha			生成验证码
+
+npm install express-session		session存储
 
 
 

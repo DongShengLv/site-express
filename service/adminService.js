@@ -46,8 +46,6 @@ module.exports.updateService = async function (accountInfo){
     loginPwd:md5(accountInfo.oldLoginPwd)
   });
 
-
-
   if(adminInfo && adminInfo.dataValues){
     // 用户信息输入正确 可以修改管理员信息
     let newPassword = md5(accountInfo.loginPwd);
@@ -58,7 +56,7 @@ module.exports.updateService = async function (accountInfo){
       loginPwd:newPassword
     };
 
-
+    // 等待查询
     await updateAdminDao(newAccountInfo);
 
     return formatResponse(200,'success',{
@@ -68,6 +66,6 @@ module.exports.updateService = async function (accountInfo){
     })
   }else{
     // 用户旧密码输入错误 抛出错误
-   return new ValidationError('旧密码不正确').toResponseJSON();
+   throw new ValidationError('旧密码不正确');
   }
 }
