@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const {expressjwt} = require("express-jwt");
+const {expressjwt:jwt} = require("express-jwt");
 const md5 = require('md5');
 const session = require('express-session');
 const { ForBiddenError, ServiceError,UnknownError } = require('./utils/errors');
@@ -23,6 +23,8 @@ require("./dao/db");
 // 引入路由
 let adminRouter = require('./routes/admin');
 let captchaRouter = require('./routes/captcha');
+let bannerRouter = require('./routes/banner');
+let uploadRouter = require('./routes/upload');
 
 // 创建服务器实例
 var app = express();
@@ -42,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // 配置验证 token 接口
-app.use(expressjwt({
+app.use(jwt({
   secret:md5(process.env.JWT_SECRET), // 密钥
   algorithms:['HS256']    // 算法
 }).unless({
@@ -57,6 +59,8 @@ app.use(expressjwt({
 // 使用路由中间件
 app.use('/api/admin',adminRouter);
 app.use('/res/captcha',captchaRouter);
+app.use('/api/banner',bannerRouter);
+app.use('/api/upload',uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

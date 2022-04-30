@@ -1,15 +1,17 @@
 // 数据库初始化操作
 const sequelize = require('./dbConnect');
 const adminModel = require('./model/adminModel');
+const bannerModel = require('./model/bannerModel');
 const md5 = require('md5');
 
 // 同步
 sequelize.sync({ alter: true }).then(async () => {
   console.log('所有模型同步创建完成');
-
   // 同步之后 一些表需要一些初始化数据
   // 先查询表内是否有数据 没有则添加初始化数据
+  // 管理员初始化数据
   const adminCount = await adminModel.count();
+  // 没有数据 进行初始化
   if(!adminCount){
     // 没有数据 进行初始化
     await adminModel.create({
@@ -18,8 +20,38 @@ sequelize.sync({ alter: true }).then(async () => {
       loginPwd:md5('123456')
     });
 
-    console.log('初始化完成');
+    console.log('admin初始化完成');
   }
+
+  // 首页标语初始化数据
+  const bannerCount = await bannerModel.count();
+  if(!bannerCount){
+    await bannerModel.bulkCreate([
+      {
+        'midImg':'/public/images/bg_min01.jpg',
+        'bigImg':'/public/images/bg_big02.jpg',
+        'title':'布朗山环绕湖',
+        'description':'布朗山环绕湖的风景摄影'
+      },
+      {
+        'midImg':'/public/images/bg_min03.jpg',
+        'bigImg':'/public/images/bg_big04.jpg',
+        'title':'湖边桥上的人',
+        'description':'湖边桥上的坐着的人在想着什么呢'
+      },
+      {
+        'midImg':'/public/images/bg_min05.jpg',
+        'bigImg':'/public/images/bg_big06.jpg',
+        'title':'湖泊与山脉',
+        'description':'湖泊与山脉交相呼应'
+      }
+    ]);
+
+    console.log('banner初始化完成');
+  }
+
 })
+
+
 
 module.exports = sequelize;

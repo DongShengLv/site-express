@@ -1,4 +1,4 @@
-// 验证码
+// 验证码路由
 let express = require('express');
 let router = express.Router();
 const { getCaptchaService } = require('../service/captchaService');
