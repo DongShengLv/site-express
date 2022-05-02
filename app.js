@@ -6,7 +6,7 @@ var logger = require('morgan');
 const {expressjwt:jwt} = require("express-jwt");
 const md5 = require('md5');
 const session = require('express-session');
-const { ForBiddenError, ServiceError,UnknownError } = require('./utils/errors');
+const { ForBiddenError, ServiceError, UnknownError } = require('./utils/errors');
 
 
 
@@ -25,6 +25,8 @@ let adminRouter = require('./routes/admin');
 let captchaRouter = require('./routes/captcha');
 let bannerRouter = require('./routes/banner');
 let uploadRouter = require('./routes/upload');
+let blogTypeRouter = require('./routes/blogType');
+let blogRouter = require('./routes/blog');
 
 // 创建服务器实例
 var app = express();
@@ -61,6 +63,8 @@ app.use('/api/admin',adminRouter);
 app.use('/res/captcha',captchaRouter);
 app.use('/api/banner',bannerRouter);
 app.use('/api/upload',uploadRouter);
+app.use('/api/blogtype',blogTypeRouter);
+app.use('/api/blog',blogRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

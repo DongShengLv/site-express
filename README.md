@@ -24,7 +24,9 @@ npm install svg-captcha 生成验证码
 
 npm install express-session session 存储
 
-npm install multer   上传图片
+npm install multer 上传图片
+
+npm install validate.js 数据验证
 
 **routes**：表示层
 
@@ -56,18 +58,39 @@ token 的解析 使用 jsonwebtoken 中的 verify 方法 接收两个参数 toke
 
 2. 验证码
 
-   | 接口名称       | 接口路径                  |
-   | -------------- | ------------------------- |
-   | 获取验证码          | **GET** /res/captcha |
+   | 接口名称   | 接口路径             |
+   | ---------- | -------------------- |
+   | 获取验证码 | **GET** /res/captcha |
 
-3. 首页标语  
+3. 首页标语
 
-   | 接口名称 | 接口路径 |
-   | -------------- | ----------------------------- |
-   | 获取首页标语 | **GET** /api/banner |
-   | 设置标语 | **POST** /api/banner |
+   | 接口名称     | 接口路径             |
+   | ------------ | -------------------- |
+   | 获取首页标语 | **GET** /api/banner  |
+   | 设置标语     | **POST** /api/banner |
 
 4. 上传图片
-   | 接口名称       | 接口路径                  |
-   | -------------- | ------------------------- |
-   | 上传图片           | **POST** /api/upload |
+
+   | 接口名称 | 接口路径             |
+   | -------- | -------------------- |
+   | 上传图片 | **POST** /api/upload |
+
+5. 文章分类
+
+   | 接口名称     | 接口路径                     |
+   | ------------ | ---------------------------- |
+   | 添加分类     | **POST** /api/blogtype       |
+   | 获取一个分类 | **GET** /api/blogtype/:id    |
+   | 删除分类     | **DELETE** /api/blogtype/:id |
+   | 修改分类     | **PUT** /api/blogtype/:id    |
+   | 获取文章分类 | **GET** /api/blogtype        |
+
+6. 文章
+
+   | 接口名称     | 接口路径                 |
+   | ------------ | ------------------------ |
+   | 发布文章     | **POST** /api/blog       |
+   | 修改文章     | **PUT** /api/blog/:id    |
+   | 删除文章     | **DELETE** /api/blog/:id |
+   | 分页获取文章 | **GET** /api/blog        |
+   | 获取单篇文章 | **GET** /api/blog/id     |
