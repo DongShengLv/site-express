@@ -6,13 +6,16 @@ const blogTypeModel = require('./model/blogTypeModel');
 const blogModel = require('./model/blogModel');
 const md5 = require('md5');
 
-// 关联表数据
-// 文章与文章分类的关联
-blogTypeModel.hasMany(blogModel,{ foreignKey:'categoryId', targetKey:'id' });
-blogModel.belongsTo(blogTypeModel,{ foreignKey:'categoryId', targetKey:'id', as:'category' });
 
-// 同步
-sequelize.sync({ alter: true }).then(async () => {
+(async () => {
+  // 关联表数据
+  // 文章与文章分类的关联
+  blogTypeModel.hasMany(blogModel,{ foreignKey:'categoryId', targetKey:'id' });
+  blogModel.belongsTo(blogTypeModel,{ foreignKey:'categoryId', targetKey:'id', as:'category' });
+
+  // 将数据模型与表进行同步
+  await sequelize.sync({ alter: true });
+
   console.log('所有模型同步创建完成');
   // 同步之后 一些表需要一些初始化数据
   // 先查询表内是否有数据 没有则添加初始化数据
@@ -56,8 +59,7 @@ sequelize.sync({ alter: true }).then(async () => {
 
     console.log('banner初始化完成');
   }
-
-})
+})();
 
 
 

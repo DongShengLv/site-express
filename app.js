@@ -53,7 +53,11 @@ app.use(jwt({
   // 需要排除不需要 token的路由
   path:[
     {'url':'/api/admin/login',methods:['POST']},
-    {'url':'/res/captcha',methods:['GET']}
+    {'url':'/res/captcha',methods:['GET']},
+    {'url':'/res/banner',methods:['GET']},
+    {'url':'/api/blogType',methods:['GET']},
+    {'url':'/api/blogType',methods:['GET']},
+    {'url':/\/api\/blog\/\d/,methods:['GET']},
   ]
 }))
 

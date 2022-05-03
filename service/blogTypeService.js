@@ -83,7 +83,7 @@ module.exports.reviseBlogTypeService = async function (id,blogTypeInfo) {
 module.exports.deleteBlogTypeService = async function (id) {
   const result = await deleteBlogTypeDao(id);
   if(result){
-    // 删除成功
+    // 删除成功 返回受影响的文章数量
     return formatResponse(200,'success',true);
   }
 }

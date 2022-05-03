@@ -93,4 +93,4 @@ token 的解析 使用 jsonwebtoken 中的 verify 方法 接收两个参数 toke
    | 修改文章     | **PUT** /api/blog/:id    |
    | 删除文章     | **DELETE** /api/blog/:id |
    | 分页获取文章 | **GET** /api/blog        |
-   | 获取单篇文章 | **GET** /api/blog/id     |
+   | 获取单篇文章 | **GET** /api/blog/:id     |
