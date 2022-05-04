@@ -27,6 +27,7 @@ let bannerRouter = require('./routes/banner');
 let uploadRouter = require('./routes/upload');
 let blogTypeRouter = require('./routes/blogType');
 let blogRouter = require('./routes/blog');
+let demoRouter = require('./routes/demo');
 
 // 创建服务器实例
 var app = express();
@@ -55,9 +56,9 @@ app.use(jwt({
     {'url':'/api/admin/login',methods:['POST']},
     {'url':'/res/captcha',methods:['GET']},
     {'url':'/res/banner',methods:['GET']},
-    {'url':'/api/blogType',methods:['GET']},
-    {'url':'/api/blogType',methods:['GET']},
+    {'url':'/api/blogtype',methods:['GET']},
     {'url':/\/api\/blog\/\d/,methods:['GET']},
+    {'url':'/api/project',methods:['GET']}
   ]
 }))
 
@@ -69,6 +70,7 @@ app.use('/api/banner',bannerRouter);
 app.use('/api/upload',uploadRouter);
 app.use('/api/blogtype',blogTypeRouter);
 app.use('/api/blog',blogRouter);
+app.use('/api/project',demoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

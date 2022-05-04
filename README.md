@@ -28,6 +28,8 @@ npm install multer 上传图片
 
 npm install validate.js 数据验证
 
+npm install markdown-toc 根据 markdown 格式的数据生成 toc 目录
+
 **routes**：表示层
 
 **service**：业务逻辑层
@@ -93,4 +95,13 @@ token 的解析 使用 jsonwebtoken 中的 verify 方法 接收两个参数 toke
    | 修改文章     | **PUT** /api/blog/:id    |
    | 删除文章     | **DELETE** /api/blog/:id |
    | 分页获取文章 | **GET** /api/blog        |
-   | 获取单篇文章 | **GET** /api/blog/:id     |
+   | 获取单篇文章 | **GET** /api/blog/:id    |
+
+7. 项目&demo
+
+   | 接口名称     | 接口路径                    |
+   | ------------ | --------------------------- |
+   | 获取所有项目 | **GET** /api/project        |
+   | 添加项目     | **POST** /api/project       |
+   | 修改项目     | **PUT** /api/project/:id    |
+   | 删除项目     | **DELETE** /api/project/:id |

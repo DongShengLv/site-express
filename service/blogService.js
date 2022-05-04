@@ -9,7 +9,7 @@ const {
   deleteBlogDao
 } = require('../dao/blogDao');
 const blogTypeModel = require('../dao/model/blogTypeModel');
-const { formatResponse, handleDataPattern } = require('../utils/tool');
+const { formatResponse, handleDataPattern, handleTOC } = require('../utils/tool');
 const { addBlogType } = require('./blogTypeService');
 const { findOneBlogTypeDao } = require('../dao/blogTypeDao');
 
@@ -25,9 +25,10 @@ validate.validators.categoryIdIsExist = async function (id) {
 
 // 添加文章
 module.exports.addBlogService = async function (newBlogInfo) {
-  // 处理文章目录 TOC
+  // 处理文章目录 TOC 经过 handleTOC 处理后的文章中的 TOC 目录已经有数据了
+  newBlogInfo = handleTOC(newBlogInfo);
   // 将 TOC格式转换成字符串
-  newBlogInfo.toc = JSON.stringify('[{a:1}]');
+  newBlogInfo.toc = JSON.stringify(newBlogInfo.toc);
   // 初始化新文章的其他信息
   newBlogInfo.scanNumber = 0;
   newBlogInfo.commentNumber = 0;
@@ -99,7 +100,8 @@ module.exports.updateBlogService = async function (id,newBlogInfo) {
   // 判断正文内容是否改变 因为正文内容的改变会影响 TOC
   if(newBlogInfo.htmlContent){
     // 需要处理 TOC 目录
-    newBlogInfo.toc = JSON.stringify('["a":"2"]');
+    newBlogInfo = handleTOC(newBlogInfo);
+    newBlogInfo.toc = JSON.stringify(newBlogInfo.toc);
   }
 
   const result = await updateBlogDao(id, newBlogInfo);
