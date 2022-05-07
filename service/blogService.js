@@ -5,13 +5,13 @@ const {
   addBlogDao,
   findBlogByPageDao,
   findOneBlogByIdDao,
-  updateBlogDao,
-  deleteBlogDao
+  updateBlogDao
 } = require('../dao/blogDao');
 const blogTypeModel = require('../dao/model/blogTypeModel');
 const { formatResponse, handleDataPattern, handleTOC } = require('../utils/tool');
 const { addBlogType } = require('./blogTypeService');
 const { findOneBlogTypeDao } = require('../dao/blogTypeDao');
+const { deleteCommentByBlogIdDao } = require('../dao/messageDao');
 
 // 扩展验证规则
 validate.validators.categoryIdIsExist = async function (id) {
@@ -81,7 +81,6 @@ module.exports.addBlogService = async function (newBlogInfo) {
   try {
     // 数据验证 异步验证
     await validate.async(newBlogInfo, blogRule);
-
     const result = await addBlogDao(newBlogInfo);
     if (result && result.dataValues) {
       // 添加文章成功
@@ -104,9 +103,26 @@ module.exports.updateBlogService = async function (id,newBlogInfo) {
     newBlogInfo.toc = JSON.stringify(newBlogInfo.toc);
   }
 
+  // 判断用户修改文章信息是否将文章分类也修改了 
+  // 如果修改了文章分类，之前文章分类对应的文章数量要减一 新的文章分类对应的文章数量要加一
+  // id => 之前的文章分类 id      newBlogInfo.categoryId => 新的文章分类 id
+  const {dataValues:oldBlogInfo} = await findOneBlogByIdDao(id)
+  if(newBlogInfo.categoryId !== oldBlogInfo.categoryId){
+    // 修改了文章分类 之前文章分类的文章数量减一
+    const oldBlogType = await findOneBlogTypeDao(oldBlogInfo.categoryId);
+    oldBlogType.articleCount--;
+    await oldBlogType.save();
+    // 修改后的文章分类的文章数量加一
+    const newBlogType = await findOneBlogTypeDao(newBlogInfo.categoryId);
+    newBlogType.articleCount++;
+    await newBlogType.save();
+  }
+
   const result = await updateBlogDao(id, newBlogInfo);
   // 处理 TOC
   result.dataValues.toc = JSON.parse(result.dataValues.toc);
+
+
   return formatResponse(200,'success',result.dataValues);
 }
 
@@ -120,9 +136,7 @@ module.exports.deleteBlogService = async function (id) {
     categoryInfo.articleCount--;
     await categoryInfo.save();
     // 该文章下的所有评论也一同删除
-
-    // 删除文章
-    await deleteBlogDao(id);
+    await deleteCommentByBlogIdDao(id);
     return formatResponse(200,'success',true);
   }
   

@@ -1,5 +1,6 @@
 // 处理 blogType 模块的业务逻辑
 const { validate } = require('validate.js');
+const { blogCountByBlogType, deleteBlogDao, deleteBlogByCategoryId } = require('../dao/blogDao');
 const { addBlogTypeDao, findAllBlogTypeDao,findOneBlogTypeDao,reviseBlogTypeDao,deleteBlogTypeDao } = require('../dao/blogTypeDao');
 const blogTypeModel = require('../dao/model/blogTypeModel');
 const { ValidationError, NotFoundError } = require('../utils/errors');
@@ -84,7 +85,10 @@ module.exports.deleteBlogTypeService = async function (id) {
   const result = await deleteBlogTypeDao(id);
   if(result){
     // 删除成功 返回受影响的文章数量
-    return formatResponse(200,'success',true);
+    const count = await blogCountByBlogType(id);
+    // 同时删除文章分类下的所有文章
+    await deleteBlogByCategoryId(id);
+    return formatResponse(200,'success',count);
   }
 }
 

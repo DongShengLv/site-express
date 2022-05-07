@@ -2,32 +2,6 @@
 const blogModel = require('./model/blogModel');
 const blogTypeModel = require('./model/blogTypeModel');
 
-// 添加文章
-module.exports.addBlogDao = async function (newBlogInfo) {
-  return await blogModel.create(newBlogInfo);
-}
-
-// 修改文章
-module.exports.updateBlogDao = async function (id, newBlogInfo) {
-  await blogModel.update(newBlogInfo,{
-    where:{
-      id
-    }
-  })
-
-  // 将更改后的文章返回
-  return await blogModel.findByPk(id);
-}
-
-// 删除文章
-module.exports.deleteBlogDao = async function (id) {
-  return await blogModel.destroy({
-    where:{
-      id
-    }
-  });
-}
-
 // 分页获取文章
 module.exports.findBlogByPageDao = async function (pageInfo) {
   // 查看客户端地址栏传来的 query信息中是否有指定 categoryId (文章分类) 信息
@@ -70,5 +44,49 @@ module.exports.findOneBlogByIdDao = async function (id) {
         as: 'category'
       }
     ],
+  })
+}
+
+// 添加文章
+module.exports.addBlogDao = async function (newBlogInfo) {
+  return await blogModel.create(newBlogInfo);
+}
+
+// 修改文章
+module.exports.updateBlogDao = async function (id, newBlogInfo) {
+  await blogModel.update(newBlogInfo,{
+    where:{
+      id
+    }
+  })
+
+  // 将更改后的文章返回
+  return await blogModel.findByPk(id);
+}
+
+// 删除文章
+module.exports.deleteBlogDao = async function (id) {
+  return await blogModel.destroy({
+    where:{
+      id
+    }
+  });
+}
+
+// 根据文章分类 id 获取其文章数量
+module.exports.blogCountByBlogType = async function (categoryId) {
+  return await blogModel.count({
+    where:{
+      categoryId
+    }
+  })
+}
+
+// 根据文章分类 id 删除文章
+module.exports.deleteBlogByCategoryId = async function (categoryId) {
+  return await blogModel.destroy({
+    where:{
+      categoryId
+    }
   })
 }

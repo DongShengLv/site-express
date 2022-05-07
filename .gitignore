@@ -1,7 +1,4 @@
 node_modules/
-
 .vscode
-
-/bin/*
-
+bin/
 .env

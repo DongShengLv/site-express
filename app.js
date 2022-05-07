@@ -28,6 +28,8 @@ let uploadRouter = require('./routes/upload');
 let blogTypeRouter = require('./routes/blogType');
 let blogRouter = require('./routes/blog');
 let demoRouter = require('./routes/demo');
+let messageRouter = require('./routes/message');
+let settingRouter = require('./routes/setting');
 
 // 创建服务器实例
 var app = express();
@@ -38,6 +40,7 @@ app.use(session({
   resave:true,
   saveUninitialized:true
 }))
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -53,24 +56,31 @@ app.use(jwt({
 }).unless({
   // 需要排除不需要 token的路由
   path:[
-    {'url':'/api/admin/login',methods:['POST']},
-    {'url':'/res/captcha',methods:['GET']},
-    {'url':'/res/banner',methods:['GET']},
-    {'url':'/api/blogtype',methods:['GET']},
-    {'url':/\/api\/blog\/\d/,methods:['GET']},
-    {'url':'/api/project',methods:['GET']}
+    {'url':'/api/admin/login', methods:['POST']},
+    {'url':'/res/captcha', methods:['GET']},
+    {'url':'/res/banner', methods:['GET']},
+    {'url':'/api/blogtype', methods:['GET']},
+    {'url':/\/api\/blog\/\d/, methods:['GET']},
+    {'url':'/api/project', methods:['GET']},
+    {'url':'/api/message', methods:['GET','POST']},
+    {'url':'/api/comment', methods:['GET','POST']},
+    {'url':'/api/setting', methods:['GET']}
   ]
 }))
 
 
 // 使用路由中间件
-app.use('/api/admin',adminRouter);
-app.use('/res/captcha',captchaRouter);
-app.use('/api/banner',bannerRouter);
-app.use('/api/upload',uploadRouter);
-app.use('/api/blogtype',blogTypeRouter);
-app.use('/api/blog',blogRouter);
-app.use('/api/project',demoRouter);
+app.use('/api/admin', adminRouter);
+app.use('/res/captcha', captchaRouter);
+app.use('/api/banner', bannerRouter);
+app.use('/api/upload', uploadRouter);
+app.use('/api/blogtype', blogTypeRouter);
+app.use('/api/blog', blogRouter);
+app.use('/api/project', demoRouter);
+app.use('/api/message', messageRouter);
+app.use('/api/comment', messageRouter);
+app.use('/api/setting', settingRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
